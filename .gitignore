@@ -1,0 +1,4 @@
+node_modules/
+subscriptions.db
+playwright-report/
+test-results/
