@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subscription & Bill Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Subscription & Bill Tracker</h1>
+
+    <div id="summary"></div>
+
+    <form id="add-bill-form">
+        <input type="text" id="bill-name" placeholder="Bill name" aria-label="Bill name" required>
+
+        <input type="number" id="bill-amount" placeholder="Amount" aria-label="Amount" min="0.01" step="0.01" required>
+
+        <input type="date" id="bill-due-date" aria-label="Due date" required>
+
+        <select id="bill-category" aria-label="Category" required>
+            <option value="">Select category</option>
+            <option value="Streaming">Streaming</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Rent">Rent</option>
+            <option value="Insurance">Insurance</option>
+            <option value="Subscriptions">Subscriptions</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <select id="bill-recurrence" aria-label="Recurrence" required>
+            <option value="">Select recurrence</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+            <option value="One-time">One-time</option>
+        </select>
+
+        <button type="submit" id="form-submit-btn">Add Bill</button>
+        <button type="button" id="cancel-edit-btn" style="display:none;">Cancel</button>
+    </form>
+
+    <div id="bill-list"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
