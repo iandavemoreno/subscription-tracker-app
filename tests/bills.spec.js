@@ -64,3 +64,26 @@ test('editing a bill updates its name, amount, category, and recurrence', async 
     await billPage.deleteBill(updatedName);
     await expect(billPage.billList).not.toContainText(updatedName);
 });
+
+test('an unpaid bill past its due date is marked overdue', async ({ page }) => {
+    const billPage = new BillPage(page);
+    await billPage.goto();
+
+    const billName = createTestBillName('Water Bill');
+    await billPage.addBill(billName, 800, '2020-01-01', 'Utilities', 'Monthly');
+
+    const bill = billPage.getBill(billName);
+    await expect(bill).toHaveClass(/overdue/);
+    await expect(bill).toContainText('Overdue');
+
+    await billPage.togglePaid(billName);
+
+    await expect(bill).not.toHaveClass(/overdue/);
+    await expect(bill).not.toContainText('Overdue');
+
+    // ------------------------------------------------
+    // CLEAN UP TEST BILL
+    // ------------------------------------------------
+    await billPage.deleteBill(billName);
+    await expect(billPage.billList).not.toContainText(billName);
+});

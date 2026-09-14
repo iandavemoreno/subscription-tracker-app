@@ -35,15 +35,22 @@ function renderBills(bills) {
         return;
     }
 
+    const today = getTodayString();
     let html = '';
 
     bills.forEach(function (bill) {
         const isPaid = bill.paid === 1;
-        html += '<div class="bill' + (isPaid ? ' paid' : '') + '">';
+        const isOverdue = !isPaid && bill.due_date < today;
+
+        let classes = 'bill';
+        if (isPaid) classes += ' paid';
+        if (isOverdue) classes += ' overdue';
+
+        html += '<div class="' + classes + '">';
         html += '<input type="checkbox" ' + (isPaid ? 'checked' : '') +
             ' onchange="togglePaid(' + bill.id + ')" aria-label="Mark ' + bill.name + ' as paid">';
         html += '<div class="bill-info">';
-        html += '<div class="bill-name">' + bill.name + '</div>';
+        html += '<div class="bill-name">' + bill.name + (isOverdue ? ' <span class="overdue-label">Overdue</span>' : '') + '</div>';
         html += '<div class="bill-meta">\u20b1' + bill.amount.toFixed(2) + ' &bull; Due ' + bill.due_date +
             ' &bull; ' + bill.category + ' &bull; ' + bill.recurrence + '</div>';
         html += '</div>';
@@ -71,6 +78,14 @@ function deleteBill(id) {
     .then(function () {
         loadBills();
     });
+}
+
+function getTodayString() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return year + '-' + month + '-' + day;
 }
 
 function editBill(id) {
